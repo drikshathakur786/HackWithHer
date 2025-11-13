@@ -1,68 +1,68 @@
-# 🌸 सखीJunction
+# 🌸 सखीJunction  
+**Empowering Women Through Community, Connection & AI-Driven Wellness**
 
-## Sakhi Junction — Empowering Women Through AI, Community & Wellness
-
-Sakhi Junction is a thoughtfully crafted digital companion designed to support women through every phase of wellness.  
-Built with **React.js, Node.js, Express.js, MongoDB, JWT**, and designed in **Figma**, the platform blends AI assistance, community interaction, and personal health management in one beautifully integrated experience.
+Sakhi Junction is a full-stack platform built to support women’s wellness through **community interaction, curated resources, meaningful connections, and collaboration**.  
+Designed with a blend of **React.js, Node.js, MongoDB, Express.js, JWT**, and **Figma**, the platform integrates AI-powered assistance with health tracking and self-care tools.
 
 ---
-## 🎯 Features
 
-### 🧠 AI-Powered Support
+# 🌟 Features
 
-- Sakhi Chatbot: AI-driven assistant for real-time, personalized guidance. Adapts to user needs with tailored health and self-care advice.
+## 🧠 AI-Powered Support  
+- Real-time chatbot guidance  
+- Personalized self-care advice  
+- Curated articles, blogs & wellness resources  
 
-- Resource Library: Curated articles and blogs on women’s health and empowerment giving guides and inspiration.
+## 🌼 Community & Connection  
+- Community feed for sharing stories & experiences  
+- Reactions & comments for deeper engagement  
+- Encrypted private chats for 1-on-1 conversations  
 
-### 🌟 Community & Connection
+## 🩺 Health & Wellness  
+- Menstrual & wellness tracker with charts  
+- Symptom logging with history  
+- Smart insights to understand patterns  
 
-- Community Feed: Safe space for women to share stories and connect. Features reactions and comments for a supportive community.
+## 🗣️ HerVoice – Self-Care Messaging  
+- Schedule motivational messages  
+- Multilingual audio affirmations  
+- Daily journaling, mindfulness & check-ins  
+- Dashboard for editing, viewing & managing habits  
 
-- Easy Chat: Secure, encrypted messaging for private discussions. Ensures user privacy with end-to-end encryption.
+## 🔐 Authentication  
+- JWT-based login/signup  
+- Secure protected routes  
+- Role-based access for sensitive community features  
 
-### 🩺 Health & Wellness
+## 🌙 Theming & Accessibility  
+- Light/Dark mode toggle  
+- Mobile-first responsive pages  
+- WCAG-aligned color contrast + clean UI  
 
-- Cycle & Wellness Tracker: Monitors menstrual cycles and symptoms with 30% improved efficiency. Provides predictive insights via intuitive charts.
-  
-- Symptom Log: Allows users to log period symptoms like cramps and bloating with intensity. Tracks history with dates for better health awareness.
+---
 
-### 🗣️ Her Voice Self-Care Messages
+# 🛠️ Tech Stack
 
-- Scheduled Messages: Schedule motivational text messages for daily inspiration. Customizable themes enhance user motivation.
+### **Frontend**
+- React.js  
+- TypeScript  
+- Tailwind CSS  
+- Framer Motion  
+- Context API  
 
-- Audio Support: Multilingual voice affirmations playable at set times. Uses Web Speech API for soothing audio delivery.
+### **Backend**
+- Node.js  
+- Express.js  
+- MongoDB  
+- JWT Authentication  
 
-- Messages List: Shows scheduled text/audio messages with delivery times. Allows editing or rescheduling from a dashboard.
+### **Other Tools**
+- Figma (Design)  
+- Web Speech API (Voice features)  
+- Vercel + Render (Deployment)  
+- Heroicons, Lottie, SVG assets  
 
-- Self-Care Activities: Curated mindfulness and journaling tasks for well-being. Tracks progress to encourage consistent habits.
-
-### 🔐 Authentication
-
-- JWT-Based Security: Robust login/signup system using JWT and Express APIs. Ensures secure access and prevents unauthorized breaches.
-
-- User Profile: Customizable profiles with secure wellness and community settings. Protected by JWT-based session management.
-
-## 🌙 Theming & Accessibility
-
-- Light/Dark Mode: Toggle themes for a personalized, eye-friendly experience. Built with Tailwind CSS for user comfort.
-
-- Responsive Design: Mobile-first design accessible across all devices. Adheres to WCAG guidelines with high-contrast visuals.
-
-## 🔧 Tech Stack
-
-| Category                     | Tech                                      
-|----------------------------- |--------------------------------------------------
-| Frontend                     | React.js + TypeScript
-| Backend                      | Node.js + Express.js
-| Database                     | MongoDB
-| Authentication               | JWT
-| Styling                      | Tailwind CSS                      
-| Animations                   | Framer Motion                               
-| State Management             | Context API  
-| Design                       | Figma
-| Voice Features               | Web Speech API
-| Deployment                   | Vercel, Render                        
-| Icons/Visuals                | Heroicons, Lottie, SVG           
+---
 
 ## 📁 Folder Structure
 
@@ -89,9 +89,8 @@ sakhijunction/ <br>
 ├── vite.config.ts <br>
 ├── tsconfig.app.json <br>
 
-## 🚀 Live Demo
-
-👉 Visit Sakhi Junction on Vercel: https://she-codes-one.vercel.app/
+## 🚀 Live Demo  
+👉 **Explore Sakhi Junction:** https://she-codes-one.vercel.app/
 
 ## 🛠️ Installation
 
