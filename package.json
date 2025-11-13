@@ -1,0 +1,35 @@
+{
+  "name": "sakhi-junction-workspace",
+  "version": "1.0.0",
+  "description": "Sakhi Junction - Women's Wellness Platform Workspace",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd sakhijunction/backend && npm run dev",
+    "dev:frontend": "cd sakhijunction && npm run dev",
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "install:backend": "cd sakhijunction/backend && npm install",
+    "install:frontend": "cd sakhijunction && npm install",
+    "build": "npm run build:frontend",
+    "build:frontend": "cd sakhijunction && npm run build",
+    "start": "npm run start:backend",
+    "start:backend": "cd sakhijunction/backend && npm start",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd sakhijunction/backend && npm test",
+    "test:frontend": "cd sakhijunction && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "women-health",
+    "wellness",
+    "healthcare",
+    "community",
+    "react",
+    "nodejs",
+    "mongodb"
+  ],
+  "author": "Driksha Thakur",
+  "license": "MIT"
+}
+
