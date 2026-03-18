@@ -39,9 +39,7 @@ export default function Login() {
     setIsLoading(true);
     
     try {
-      console.log("🔄 Attempting login for:", email);
-      
-      const BACKEND_URL = 'http://localhost:5000';
+      const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       
       const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
         method: 'POST',
@@ -52,27 +50,16 @@ export default function Login() {
       });
 
       const result = await response.json();
-      console.log("📝 Login response:", { status: response.status, result });
       
       if (response.ok && result.token && result.user) {
-        console.log("✅ Login successful");
-        
-        // Use the auth context login method
         login(result.token, result.user);
-        
         toast.success(`Welcome back! 🌸`);
-        
-        // Navigate to home page
-        console.log("🧭 Navigating to /home...");
         navigate("/home", { replace: true });
       } else {
-        // Handle login failure
-        console.error("❌ Login failed:", result);
         const errorMessage = result.message || "Invalid email or password";
         toast.error(errorMessage);
       }
     } catch (error) {
-      console.error("❌ Login error:", error);
       toast.error("Network error. Please check your connection and try again.");
     } finally {
       setIsLoading(false);

@@ -39,102 +39,71 @@ import {
 } from "lucide-react"
 
 // --- API Helpers for MongoDB persistence ---
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
-  : 'http://localhost:5000/api';
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api';
 const API_URL = `${API_BASE_URL}/health`;
 
 const getToken = () => {
   if (typeof window !== "undefined") {
-    // Check both localStorage and sessionStorage
     return localStorage.getItem("token") || sessionStorage.getItem("token");
   }
   return null;
 }
 
 async function fetchHealthData() {
-  try {
-    const token = getToken();
-    console.log("🔍 Fetching health data...", { hasToken: !!token, apiUrl: API_URL });
-    
-    const headers = {
-      "Content-Type": "application/json",
-    };
+  const token = getToken();
 
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    } else {
-      console.warn("⚠️ No authentication token found");
+  if (!token) {
+    return {};
+  }
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const res = await fetch(API_URL, { headers });
+
+  if (!res.ok) {
+    if (res.status === 401) {
+      throw new Error("Authentication required");
+    }
+    if (res.status === 404) {
       return {};
     }
-
-    const res = await fetch(API_URL, { headers });
-    console.log("📡 API Response status:", res.status);
-
-    if (!res.ok) {
-      if (res.status === 401) {
-        console.error("🚫 Unauthorized - invalid or expired token");
-        throw new Error("Authentication required");
-      }
-      if (res.status === 404) {
-        console.log("📝 No data found, returning empty object");
-        return {};
-      }
-      const errorText = await res.text();
-      console.error("❌ API Error:", res.status, errorText);
-      throw new Error(`Failed to load data: ${res.status} - ${errorText}`);
-    }
-
-    const data = await res.json();
-    console.log("✅ Successfully fetched health data:", Object.keys(data));
-    return data;
-  } catch (error) {
-    console.error("💥 Error fetching health data:", error);
-    throw error;
+    const errorText = await res.text();
+    throw new Error(`Failed to load data: ${res.status} - ${errorText}`);
   }
+
+  return await res.json();
 }
 
 async function saveHealthData(data) {
-  try {
-    const token = getToken();
-    console.log("💾 Saving health data...", { hasToken: !!token, dataKeys: Object.keys(data) });
-    
-    const headers = {
-      "Content-Type": "application/json",
-    };
+  const token = getToken();
 
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    } else {
-      console.error("🚫 No authentication token found for saving");
+  if (!token) {
+    throw new Error("Authentication required");
+  }
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data }),
+  });
+
+  if (!res.ok) {
+    if (res.status === 401) {
       throw new Error("Authentication required");
     }
-
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ data }),
-    });
-
-    console.log("📡 Save response status:", res.status);
-
-    if (!res.ok) {
-      if (res.status === 401) {
-        console.error("🚫 Unauthorized during save");
-        throw new Error("Authentication required");
-      }
-      const errorText = await res.text();
-      console.error("❌ Save Error:", res.status, errorText);
-      throw new Error(`Failed to save data: ${res.status} - ${errorText}`);
-    }
-
-    const result = await res.json();
-    console.log("✅ Successfully saved health data");
-    return result;
-  } catch (error) {
-    console.error("💥 Error saving health data:", error);
-    throw error;
+    const errorText = await res.text();
+    throw new Error(`Failed to save data: ${res.status} - ${errorText}`);
   }
+
+  return await res.json();
 }
 
 export default function EnhancedHealthTracker() {

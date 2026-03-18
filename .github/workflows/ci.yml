@@ -1,0 +1,72 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test-backend:
+    name: Backend - Lint & Test
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    env:
+      NODE_ENV: test
+      MONGODB_URI: mongodb://localhost:27017/sakhi-junction-test
+      JWT_SECRET: test-secret-key-for-ci
+      JWT_EXPIRE: 1h
+      PORT: 5000
+      CORS_ORIGINS: http://localhost:5173
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: sakhijunction/backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: sakhijunction/backend
+
+      - name: Run lint
+        run: npm run lint --if-present
+        working-directory: sakhijunction/backend
+
+      - name: Run tests
+        run: npm test -- --forceExit --detectOpenHandles
+        working-directory: sakhijunction/backend
+
+  build-frontend:
+    name: Frontend - Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: sakhijunction/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: sakhijunction
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: sakhijunction
+        env:
+          VITE_API_URL: http://localhost:5000

@@ -8,6 +8,8 @@ import rateLimit from 'express-rate-limit';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
+
 // Load environment variables
 dotenv.config();
 
@@ -27,6 +29,9 @@ import { socketAuthMiddleware } from './middleware/socketAuth.js';
 
 // Import socket handlers
 import { handleSocketConnection } from './sockets/index.js';
+
+// Import swagger spec
+import swaggerSpec from './lib/swagger.js';
 
 
 
@@ -90,7 +95,41 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API Routes
+// Swagger API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: 'Sakhi Junction API Docs',
+}));
+
+// Rate Limiters
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5,
+  message: { success: false, message: 'Too many login attempts, please try again after 15 minutes' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3,
+  message: { success: false, message: 'Too many accounts created, please try again after an hour' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply general rate limiter to all API routes
+app.use('/api/', apiLimiter);
+
+// API Routes (auth routes get stricter limiters)
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', registerLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);

@@ -27,6 +27,8 @@ export const useAuth = () => {
   return context;
 };
 
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,16 +38,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = (token: string, userData: User) => {
     localStorage.setItem('token', token);
     setUser(userData);
-    console.log('✅ User logged in:', userData.email);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
     setUser(null);
-    console.log('👋 User logged out');
-    
-    // Redirect to home page
     window.location.href = '/';
   };
 
@@ -58,7 +56,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
-      const BACKEND_URL = 'http://localhost:5000';
       const response = await fetch(`${BACKEND_URL}/api/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -69,11 +66,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
-        console.log('✅ Authentication verified:', userData.email);
         setIsLoading(false);
         return true;
       } else {
-        console.log('❌ Authentication failed, clearing tokens');
         localStorage.removeItem('token');
         sessionStorage.removeItem('token');
         setUser(null);
@@ -81,7 +76,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return false;
       }
     } catch (error) {
-      console.error('❌ Auth check error:', error);
       setUser(null);
       setIsLoading(false);
       return false;
