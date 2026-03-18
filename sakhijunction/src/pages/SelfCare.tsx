@@ -17,7 +17,15 @@ import { toast } from "sonner";
 
 export default function SelfCare() {
   const [date, setDate] = useState<Date>();
-  const [messages, setMessages] = useState<any[]>([
+interface SelfCareMessage {
+  id: number;
+  message: string;
+  scheduledFor: Date;
+  repeat?: string;
+  voiceNote: Blob | null;
+}
+
+  const [messages, setMessages] = useState<SelfCareMessage[]>([
     {
       id: 1,
       message: "Remember to take a moment for yourself today. Breathe deeply and appreciate the journey you're on.",
@@ -53,7 +61,7 @@ export default function SelfCare() {
 
   useEffect(() => {
     messages.forEach((msg) => {
-      const timeout = msg.scheduledFor - new Date();
+      const timeout = new Date(msg.scheduledFor).getTime() - new Date().getTime();
       if (timeout > 0) {
         setTimeout(() => {
           alertMessage(msg);
@@ -62,7 +70,7 @@ export default function SelfCare() {
     });
   }, [messages]);
 
-  const alertMessage = (msg: any) => {
+  const alertMessage = (msg: SelfCareMessage) => {
     toast(`Message: ${msg.message}`, {
       duration: 8000,
       action: msg.voiceNote && (
@@ -214,7 +222,7 @@ export default function SelfCare() {
                         <div className="flex items-center mt-1">
                           <Button
                             type="button"
-                            variant={recording ? "danger" : "outline"}
+                            variant={recording ? "destructive" : "outline"}
                             onClick={recording ? stopRecording : startRecording}
                             className="flex-1"
                           >
@@ -308,6 +316,7 @@ export default function SelfCare() {
                 {messages.map((msg) => (
                   <MessageCard
                     key={msg.id}
+                    id={msg.id}
                     message={msg.message}
                     scheduledFor={msg.scheduledFor}
                     repeat={msg.repeat}

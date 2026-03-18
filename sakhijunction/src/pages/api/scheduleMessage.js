@@ -1,8 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { sendEmail } from '@/lib/sendEmail';
-import { sendSMS } from '@/lib/sendSMS';
-
-export default async function scheduleMessage(req: NextApiRequest, res: NextApiResponse) {
+export default async function scheduleMessage(req, res) {
   const { message, scheduledFor, delivery } = req.body;
 
   try {
